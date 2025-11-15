@@ -1,0 +1,851 @@
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight, Database, FileCode, Search, Layers, Book, Code, FileText, GitBranch } from 'lucide-react';
+
+const XMLPresentation = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      type: 'title',
+      title: 'Bases de Données XML',
+      subtitle: 'Introduction Complète et Détaillée',
+      icon: Database
+    },
+    {
+      type: 'content',
+      title: 'Table des Matières',
+      icon: Book,
+      content: [
+        '1. Introduction à XML et aux Bases de Données',
+        '2. Structure et Syntaxe XML',
+        '3. DTD - Document Type Definition',
+        '4. XML Schema (XSD)',
+        '5. XPath - Langage de Navigation',
+        '6. XQuery - Langage de Requêtes',
+        '7. XSLT - Transformation de Documents',
+        '8. Bases de Données XML Natives'
+      ]
+    },
+    {
+      type: 'chapter',
+      title: 'Chapitre 1',
+      subtitle: 'Introduction à XML et aux Bases de Données',
+      icon: FileCode
+    },
+    {
+      type: 'content',
+      title: 'Qu\'est-ce que XML ?',
+      icon: FileCode,
+      content: [
+        'XML = eXtensible Markup Language',
+        'Langage de balisage extensible',
+        'Utilisé pour stocker et transporter des données',
+        'Lisible par l\'humain et la machine',
+        'Indépendant de la plateforme',
+        'Standard W3C depuis 1998',
+        'Auto-descriptif et structuré hiérarchiquement'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : Document XML Simple',
+      code: `<?xml version="1.0" encoding="UTF-8"?>
+<bibliotheque>
+  <livre id="101">
+    <titre>Apprendre XML</titre>
+    <auteur>Jean Dupont</auteur>
+    <annee>2024</annee>
+    <prix devise="EUR">25.99</prix>
+    <categorie>Informatique</categorie>
+  </livre>
+  <livre id="102">
+    <titre>Bases de Données Avancées</titre>
+    <auteur>Marie Martin</auteur>
+    <annee>2023</annee>
+    <prix devise="EUR">32.50</prix>
+    <categorie>Informatique</categorie>
+  </livre>
+</bibliotheque>`
+    },
+    {
+      type: 'content',
+      title: 'Avantages de XML',
+      icon: Layers,
+      content: [
+        '✓ Simplicité et lisibilité',
+        '✓ Extensibilité - création de balises personnalisées',
+        '✓ Auto-description des données',
+        '✓ Indépendance des plateformes',
+        '✓ Validation possible (DTD, Schema)',
+        '✓ Support universel',
+        '✓ Séparation contenu/présentation'
+      ]
+    },
+    {
+      type: 'content',
+      title: 'XML vs Bases de Données Relationnelles',
+      icon: Database,
+      content: [
+        'Structure hiérarchique vs tabulaire',
+        'Flexibilité du schéma',
+        'Mieux adapté pour données semi-structurées',
+        'Échange de données entre systèmes',
+        'Stockage de documents complexes',
+        'Requêtes différentes (XPath/XQuery vs SQL)'
+      ]
+    },
+    {
+      type: 'chapter',
+      title: 'Chapitre 2',
+      subtitle: 'Structure et Syntaxe XML',
+      icon: GitBranch
+    },
+    {
+      type: 'content',
+      title: 'Règles de Syntaxe XML',
+      icon: Code,
+      content: [
+        '1. Déclaration XML obligatoire',
+        '2. Un seul élément racine',
+        '3. Balises doivent être fermées',
+        '4. Sensible à la casse',
+        '5. Éléments correctement imbriqués',
+        '6. Attributs entre guillemets',
+        '7. Commentaires : <!-- commentaire -->'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : Éléments et Attributs',
+      code: `<?xml version="1.0" encoding="UTF-8"?>
+<universite nom="Université d'Alger">
+  <departement code="INFO">
+    <nom>Informatique</nom>
+    <etudiants>
+      <etudiant matricule="E001" niveau="L3">
+        <nom>Benali</nom>
+        <prenom>Karim</prenom>
+        <dateNaissance>2002-05-15</dateNaissance>
+        <notes>
+          <note matiere="BDD" coefficient="3">16.5</note>
+          <note matiere="XML" coefficient="2">18.0</note>
+        </notes>
+      </etudiant>
+      <etudiant matricule="E002" niveau="L3">
+        <nom>Cherif</nom>
+        <prenom>Amina</prenom>
+        <dateNaissance>2001-12-08</dateNaissance>
+        <notes>
+          <note matiere="BDD" coefficient="3">15.0</note>
+          <note matiere="XML" coefficient="2">17.5</note>
+        </notes>
+      </etudiant>
+    </etudiants>
+  </departement>
+</universite>`
+    },
+    {
+      type: 'content',
+      title: 'Éléments vs Attributs',
+      icon: FileText,
+      content: [
+        'Éléments : peuvent contenir d\'autres éléments',
+        'Éléments : mieux pour données structurées',
+        'Attributs : métadonnées simples',
+        'Attributs : ne peuvent pas être répétés',
+        'Préférence : utiliser éléments pour les données',
+        'Attributs : identifiants, types, références'
+      ]
+    },
+    {
+      type: 'chapter',
+      title: 'Chapitre 3',
+      subtitle: 'DTD - Document Type Definition',
+      icon: FileText
+    },
+    {
+      type: 'content',
+      title: 'Qu\'est-ce qu\'une DTD ?',
+      icon: FileText,
+      content: [
+        'Définit la structure d\'un document XML',
+        'Spécifie les éléments autorisés',
+        'Définit les attributs et leurs types',
+        'Validation de documents XML',
+        'DTD interne ou externe',
+        'Syntaxe spécifique (non XML)'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : DTD pour Bibliothèque',
+      code: `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE bibliotheque [
+  <!ELEMENT bibliotheque (livre+)>
+  <!ELEMENT livre (titre, auteur, annee, prix)>
+  <!ATTLIST livre id ID #REQUIRED>
+  <!ELEMENT titre (#PCDATA)>
+  <!ELEMENT auteur (#PCDATA)>
+  <!ELEMENT annee (#PCDATA)>
+  <!ELEMENT prix (#PCDATA)>
+  <!ATTLIST prix devise CDATA #REQUIRED>
+]>
+
+<bibliotheque>
+  <livre id="L001">
+    <titre>Introduction à XML</titre>
+    <auteur>Pierre Durand</auteur>
+    <annee>2024</annee>
+    <prix devise="EUR">29.99</prix>
+  </livre>
+</bibliotheque>`
+    },
+    {
+      type: 'content',
+      title: 'Déclarations DTD Courantes',
+      icon: Code,
+      content: [
+        '<!ELEMENT> : définit un élément',
+        '<!ATTLIST> : définit des attributs',
+        '#PCDATA : données textuelles',
+        '+ : un ou plusieurs',
+        '* : zéro ou plusieurs',
+        '? : zéro ou un',
+        '| : choix (ou)'
+      ]
+    },
+    {
+      type: 'chapter',
+      title: 'Chapitre 4',
+      subtitle: 'XML Schema (XSD)',
+      icon: Layers
+    },
+    {
+      type: 'content',
+      title: 'XML Schema vs DTD',
+      icon: Layers,
+      content: [
+        'Syntaxe XML (plus cohérent)',
+        'Types de données riches',
+        'Espaces de noms supportés',
+        'Contraintes plus puissantes',
+        'Extensibilité améliorée',
+        'Réutilisation de définitions',
+        'Standard W3C moderne'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : XML Schema Simple',
+      code: `<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
+  <xs:element name="bibliotheque">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="livre" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="titre" type="xs:string"/>
+              <xs:element name="auteur" type="xs:string"/>
+              <xs:element name="annee" type="xs:gYear"/>
+              <xs:element name="prix">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:decimal">
+                      <xs:attribute name="devise" type="xs:string"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:ID" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+</xs:schema>`
+    },
+    {
+      type: 'content',
+      title: 'Types de Données XSD',
+      icon: Database,
+      content: [
+        'xs:string - chaînes de caractères',
+        'xs:integer - nombres entiers',
+        'xs:decimal - nombres décimaux',
+        'xs:date - dates (AAAA-MM-JJ)',
+        'xs:boolean - vrai/faux',
+        'xs:time - heures',
+        'Types personnalisés possibles'
+      ]
+    },
+    {
+      type: 'chapter',
+      title: 'Chapitre 5',
+      subtitle: 'XPath - Langage de Navigation',
+      icon: Search
+    },
+    {
+      type: 'content',
+      title: 'Introduction à XPath',
+      icon: Search,
+      content: [
+        'Langage de navigation dans XML',
+        'Sélection de nœuds',
+        'Expressions de chemin',
+        'Utilisé par XQuery et XSLT',
+        'Syntaxe concise et puissante',
+        'Fonctions intégrées nombreuses',
+        'Standard W3C'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : Expressions XPath',
+      code: `Document XML :
+<bibliotheque>
+  <livre id="1">
+    <titre>XML Avancé</titre>
+    <auteur>Dupont</auteur>
+    <prix>30</prix>
+  </livre>
+  <livre id="2">
+    <titre>Bases de Données</titre>
+    <auteur>Martin</auteur>
+    <prix>25</prix>
+  </livre>
+</bibliotheque>
+
+Expressions XPath :
+
+1. /bibliotheque/livre
+   → Sélectionne tous les livres
+
+2. //titre
+   → Tous les éléments titre
+
+3. /bibliotheque/livre[prix>28]
+   → Livres avec prix > 28
+
+4. /bibliotheque/livre[1]
+   → Premier livre
+
+5. //livre[@id="2"]
+   → Livre avec id="2"
+
+6. //livre[auteur="Dupont"]/titre
+   → Titre du livre de Dupont
+
+7. count(//livre)
+   → Nombre de livres`
+    },
+    {
+      type: 'content',
+      title: 'Axes XPath Principaux',
+      icon: GitBranch,
+      content: [
+        'child:: - enfants directs',
+        'descendant:: - tous les descendants',
+        'parent:: - élément parent',
+        'ancestor:: - tous les ancêtres',
+        'following-sibling:: - frères suivants',
+        'preceding-sibling:: - frères précédents',
+        'attribute:: ou @ - attributs'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : Prédicats et Fonctions XPath',
+      code: `Document XML :
+<universite>
+  <etudiant>
+    <nom>Benali</nom>
+    <note>16</note>
+  </etudiant>
+  <etudiant>
+    <nom>Cherif</nom>
+    <note>18</note>
+  </etudiant>
+  <etudiant>
+    <nom>Amara</nom>
+    <note>14</note>
+  </etudiant>
+</universite>
+
+Requêtes XPath :
+
+1. //etudiant[note>=16]
+   → Étudiants avec note ≥ 16
+
+2. //etudiant[position()=last()]
+   → Dernier étudiant
+
+3. sum(//note)
+   → Somme de toutes les notes
+
+4. avg(//note)
+   → Moyenne des notes
+
+5. //etudiant[note=max(//note)]
+   → Étudiant(s) avec la meilleure note
+
+6. count(//etudiant[note<15])
+   → Nombre d'étudiants avec note < 15`
+    },
+    {
+      type: 'chapter',
+      title: 'Chapitre 6',
+      subtitle: 'XQuery - Langage de Requêtes',
+      icon: Database
+    },
+    {
+      type: 'content',
+      title: 'Introduction à XQuery',
+      icon: Database,
+      content: [
+        'Langage de requête pour XML',
+        'Similaire à SQL pour XML',
+        'Expressions FLWOR (For, Let, Where, Order, Return)',
+        'Fonctions et opérateurs puissants',
+        'Peut créer de nouveaux documents XML',
+        'Jointures et agrégations possibles',
+        'Standard W3C'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : Requête XQuery Simple',
+      code: `(: Document XML source :)
+<bibliotheque>
+  <livre>
+    <titre>XML Pro</titre>
+    <auteur>Dupont</auteur>
+    <prix>35</prix>
+    <categorie>Informatique</categorie>
+  </livre>
+  <livre>
+    <titre>Bases de Données</titre>
+    <auteur>Martin</auteur>
+    <prix>28</prix>
+    <categorie>Informatique</categorie>
+  </livre>
+  <livre>
+    <titre>Histoire de l'Art</titre>
+    <auteur>Leblanc</auteur>
+    <prix>22</prix>
+    <categorie>Art</categorie>
+  </livre>
+</bibliotheque>
+
+(: Requête XQuery :)
+for $livre in doc("bibliotheque.xml")//livre
+where $livre/prix > 25 and $livre/categorie = "Informatique"
+order by $livre/prix descending
+return 
+  <resultat>
+    <titre>{$livre/titre/text()}</titre>
+    <prix>{$livre/prix/text()}</prix>
+  </resultat>
+
+(: Résultat :)
+<resultat>
+  <titre>XML Pro</titre>
+  <prix>35</prix>
+</resultat>
+<resultat>
+  <titre>Bases de Données</titre>
+  <prix>28</prix>
+</resultat>`
+    },
+    {
+      type: 'content',
+      title: 'Expressions FLWOR',
+      icon: Code,
+      content: [
+        'FOR : itération sur séquences',
+        'LET : assignation de variables',
+        'WHERE : conditions de filtrage',
+        'ORDER BY : tri des résultats',
+        'RETURN : construction du résultat',
+        'GROUP BY : regroupement (XQuery 3.0)',
+        'Similaire à SQL SELECT'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : XQuery Avancé avec Agrégation',
+      code: `(: Document XML :)
+<magasin>
+  <vente date="2024-01-15">
+    <produit>Ordinateur</produit>
+    <montant>1200</montant>
+    <categorie>Électronique</categorie>
+  </vente>
+  <vente date="2024-01-16">
+    <produit>Clavier</produit>
+    <montant>50</montant>
+    <categorie>Électronique</categorie>
+  </vente>
+  <vente date="2024-01-16">
+    <produit>Bureau</produit>
+    <montant>300</montant>
+    <categorie>Mobilier</categorie>
+  </vente>
+</magasin>
+
+(: Requête : Total des ventes par catégorie :)
+<rapport>
+{
+  for $cat in distinct-values(//categorie)
+  let $ventes := //vente[categorie=$cat]
+  let $total := sum($ventes/montant)
+  order by $total descending
+  return
+    <categorie nom="{$cat}">
+      <nombre_ventes>{count($ventes)}</nombre_ventes>
+      <total>{$total}</total>
+      <moyenne>{avg($ventes/montant)}</moyenne>
+    </categorie>
+}
+</rapport>
+
+(: Résultat :)
+<rapport>
+  <categorie nom="Électronique">
+    <nombre_ventes>2</nombre_ventes>
+    <total>1250</total>
+    <moyenne>625</moyenne>
+  </categorie>
+  <categorie nom="Mobilier">
+    <nombre_ventes>1</nombre_ventes>
+    <total>300</total>
+    <moyenne>300</moyenne>
+  </categorie>
+</rapport>`
+    },
+    {
+      type: 'chapter',
+      title: 'Chapitre 7',
+      subtitle: 'XSLT - Transformation de Documents',
+      icon: GitBranch
+    },
+    {
+      type: 'content',
+      title: 'Introduction à XSLT',
+      icon: GitBranch,
+      content: [
+        'eXtensible Stylesheet Language Transformations',
+        'Transformation XML → XML/HTML/Texte',
+        'Basé sur des templates (modèles)',
+        'Utilise XPath pour sélection',
+        'Langage déclaratif',
+        'Puissant pour présentation de données',
+        'Standard W3C'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : XSLT Simple (XML vers HTML)',
+      code: `<!-- Document XML source : livres.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<bibliotheque>
+  <livre id="1">
+    <titre>Introduction à XML</titre>
+    <auteur>Dupont Jean</auteur>
+    <prix>29.99</prix>
+  </livre>
+  <livre id="2">
+    <titre>XQuery Avancé</titre>
+    <auteur>Martin Claire</auteur>
+    <prix>34.50</prix>
+  </livre>
+</bibliotheque>
+
+<!-- Feuille de style XSLT : livres.xsl -->
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  
+  <xsl:template match="/">
+    <html>
+      <head>
+        <title>Catalogue des Livres</title>
+      </head>
+      <body>
+        <h1>Notre Bibliothèque</h1>
+        <table border="1">
+          <tr>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Prix</th>
+          </tr>
+          <xsl:apply-templates select="bibliotheque/livre"/>
+        </table>
+      </body>
+    </html>
+  </xsl:template>
+  
+  <xsl:template match="livre">
+    <tr>
+      <td><xsl:value-of select="@id"/></td>
+      <td><xsl:value-of select="titre"/></td>
+      <td><xsl:value-of select="auteur"/></td>
+      <td><xsl:value-of select="prix"/> €</td>
+    </tr>
+  </xsl:template>
+  
+</xsl:stylesheet>`
+    },
+    {
+      type: 'content',
+      title: 'Éléments XSLT Principaux',
+      icon: Code,
+      content: [
+        '<xsl:template> - définit un modèle',
+        '<xsl:apply-templates> - applique modèles',
+        '<xsl:value-of> - extrait valeurs',
+        '<xsl:for-each> - boucle',
+        '<xsl:if> - condition',
+        '<xsl:choose> - choix multiple',
+        '<xsl:sort> - tri des résultats'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : XSLT avec Conditions et Tri',
+      code: `<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  
+  <xsl:template match="/">
+    <html>
+      <body>
+        <h2>Livres Classés par Prix</h2>
+        <ul>
+          <xsl:for-each select="bibliotheque/livre">
+            <xsl:sort select="prix" data-type="number" order="descending"/>
+            <li>
+              <xsl:value-of select="titre"/> - 
+              <xsl:value-of select="prix"/>€
+              
+              <!-- Condition pour afficher une remarque -->
+              <xsl:if test="prix &gt; 30">
+                <strong> (Prix élevé)</strong>
+              </xsl:if>
+              
+              <!-- Choix multiple selon le prix -->
+              <xsl:choose>
+                <xsl:when test="prix &lt; 20">
+                  <span style="color: green;"> - Bon marché</span>
+                </xsl:when>
+                <xsl:when test="prix &lt; 35">
+                  <span style="color: orange;"> - Prix moyen</span>
+                </xsl:when>
+                <xsl:otherwise>
+                  <span style="color: red;"> - Prix premium</span>
+                </xsl:otherwise>
+              </xsl:choose>
+            </li>
+          </xsl:for-each>
+        </ul>
+        
+        <p>Prix moyen : 
+          <xsl:value-of select="sum(bibliotheque/livre/prix) div count(bibliotheque/livre)"/>€
+        </p>
+      </body>
+    </html>
+  </xsl:template>
+  
+</xsl:stylesheet>`
+    },
+    {
+      type: 'chapter',
+      title: 'Chapitre 8',
+      subtitle: 'Bases de Données XML Natives',
+      icon: Database
+    },
+    {
+      type: 'content',
+      title: 'Qu\'est-ce qu\'une BD XML Native ?',
+      icon: Database,
+      content: [
+        'Stocke données en format XML natif',
+        'Pas de mapping relationnel nécessaire',
+        'Optimisée pour requêtes XPath/XQuery',
+        'Conservation de la structure hiérarchique',
+        'Indexation XML spécialisée',
+        'Exemples : eXist-db, BaseX, MarkLogic',
+        'Idéale pour documents semi-structurés'
+      ]
+    },
+    {
+      type: 'content',
+      title: 'BD XML Native vs Relationnelle',
+      icon: Layers,
+      content: [
+        '✓ Structure flexible et hiérarchique',
+        '✓ Pas de schéma rigide requis',
+        '✓ Requêtes XQuery natives',
+        '✓ Mieux pour documents complexes',
+        '✓ Validation intégrée (DTD/Schema)',
+        '✗ Moins mature que SGBDR',
+        '✗ Performance variable selon usage'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : Utilisation de BaseX',
+      code: `# Créer une base de données
+CREATE DB bibliotheque
+
+# Ajouter un document
+ADD TO bibliotheque
+<bibliotheque>
+  <livre id="1">
+    <titre>XML et Bases de Données</titre>
+    <auteur>Dupont</auteur>
+    <prix>32</prix>
+  </livre>
+</bibliotheque>
+
+# Requête XQuery
+XQUERY for $livre in //livre
+where $livre/prix > 30
+return $livre/titre
+
+# Résultat
+<titre>XML et Bases de Données</titre>
+
+# Créer un index
+CREATE INDEX fulltext
+
+# Recherche plein texte
+XQUERY //livre[text() contains text "Bases"]
+
+# Mise à jour
+XQUERY replace value of node //livre[@id="1"]/prix with 35
+
+# Supprimer un élément
+XQUERY delete node //livre[@id="1"]`
+    },
+    {
+      type: 'content',
+      title: 'Cas d\'Usage des BD XML',
+      icon: FileCode,
+      content: [
+        'Gestion de contenu (CMS)',
+        'Documentation technique',
+        'Données scientifiques complexes',
+        'Archives et bibliothèques numériques',
+        'Configuration d\'applications',
+        'Échange de données B2B',
+        'Systèmes d\'information géographique'
+      ]
+    },
+    {
+      type: 'example',
+      title: 'Exemple : Application Complète - Gestion d\'Étudiants',
+      code: `<!-- Document XML : etudiants.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<universite>
+  <departement code="INFO">
+    <nom>Informatique</nom>
+    <chef>Dr. Benali</chef>
+    <etudiants>
+      <etudiant matricule="E2024001">
+        <nom>Cherif</nom>
+        <prenom>Amina</prenom>
+        <dateNaissance>2003-05-12</dateNaissance>
+        <niveau>L3</niveau>
+        <modules>
+          <module code="BDD">
+            <nom>Bases de Données</nom>
+            <coefficient>3</coefficient>
+            <note>16.5</note>
+          </module>
+          <module code="XML">
+            <nom>Technologies XML</nom>
+            <coefficient>2</coefficient>
+            <note>18.0</note>
+          </module>
+          <module code="PROG">
+            <nom>Programmation Avancée</nom>
+            <coefficient>3</coefficient>
+            <note>15.5</note>
+          </module>
+        </modules>
+      </etudiant>
+      <etudiant matricule="E2024002">
+        <nom>Meziane</nom>
+        <prenom>Karim</prenom>
+        <dateNaissance>2002-11-23</dateNaissance>
+        <niveau>L3</niveau>
+        <modules>
+          <module code="BDD">
+            <nom>Bases de Données</nom>
+            <coefficient>3</coefficient>
+            <note>14.0</note>
+          </module>
+          <module code="XML">
+            <nom>Technologies XML</nom>
+            <coefficient>2</coefficient>
+            <note>16.5</note>
+          </module>
+          <module code="PROG">
+            <nom>Programmation Avancée</nom>
+            <coefficient>3</coefficient>
+            <note>17.0</note>
+          </module>
+        </modules>
+      </etudiant>
+    </etudiants>
+  </departement>
+</universite>
+
+<!-- Requêtes XQuery Utiles -->
+
+(: 1. Moyenne générale de chaque étudiant :)
+for $etudiant in //etudiant
+let $moyennePonderee := 
+  sum($etudiant/modules/module/(note * coefficient)) div
+  sum($etudiant/modules/module/coefficient)
+return
+  <resultat>
+    <etudiant>{$etudiant/nom/text()} {$etudiant/prenom/text()}</etudiant>
+    <moyenne>{round($moyennePonderee * 100) div 100}</moyenne>
+  </resultat>
+
+(: 2. Étudiants admis (moyenne >= 10) :)
+for $etudiant in //etudiant
+let $moyenne := 
+  sum($etudiant/modules/module/(note * coefficient)) div
+  sum($etudiant/modules/module/coefficient)
+where $moyenne >= 10
+order by $moyenne descending
+return $etudiant
+
+(: 3. Statistiques par module :)
+for $code in distinct-values(//module/@code)
+let $notes := //module[@code=$code]/note
+return
+  <statistiques_module>
+    <code>{$code}</code>
+    <nom>{(//module[@code=$code]/nom)[1]/text()}</nom>
+    <moyenne>{avg($notes)}</moyenne>
+    <min>{min($notes)}</min>
+    <max>{max($notes)}</max>
+    <nb_etudiants>{count($notes)}</nb_etudiants>
+  </statistiques_module>`
+    },
+    {
+      type: 'content',
+      title: 'Meilleures Pratiques XML',
+      icon: Book,
+      content: [
+        '✓ Utiliser des noms d\'éléments descriptifs',
+        '✓ Valider avec DTD ou Schema',
+        '✓ Préférer é
